@@ -178,7 +178,7 @@
   </xsl:template>
 
   <xsl:template match="orgname" mode="article.titlepage.recto.auto.mode">
-    <fo:block text-align="end" font-size="&x-large;" xsl:use-attribute-sets="dark-green">]
+    <fo:block text-align="end" font-size="&x-large;" xsl:use-attribute-sets="dark-green">
       <xsl:apply-templates select="." mode="article.titlepage.recto.mode"/>
     </fo:block>
   </xsl:template>
