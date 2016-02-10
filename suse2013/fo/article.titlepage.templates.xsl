@@ -76,7 +76,7 @@
                   select="info/orgname"/>
               </xsl:when>
               <xsl:otherwise>
-                <!-- Keep it empty, when no orgname is found -->
+                <!-- Empty if no orgname is found -->
                 <fo:block/>
               </xsl:otherwise>
             </xsl:choose>
