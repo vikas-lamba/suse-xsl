@@ -35,29 +35,53 @@
       </xsl:call-template>
     </xsl:variable>
 
-    <fo:block space-after="&gutter;mm" text-align="start">
-      <xsl:choose>
-        <!-- Don't let Geeko overhang the right side of the page - it
+    <fo:table><!--  border="1pt solid red" -->
+      <fo:table-body>
+        <fo:table-cell>
+          <fo:block text-align="start" padding-left="0">
+            <xsl:choose>
+              <!-- Don't let Geeko overhang the right side of the page - it
              is not mirrored, thus some letters would hang over the side
-             of hte page, instead of the tail. -->
-        <!-- FIXME: This is not the optimal implementation if we ever
+             of the page, instead of the tail. -->
+              <!-- FIXME: This is not the optimal implementation if we ever
              want to be able to switch out images easily. -->
-        <xsl:when test="$writing.mode ='rl'">
-          <xsl:attribute name="margin-right">
-            <xsl:value-of select="&columnfragment; + &gutter;"/>mm
-          </xsl:attribute>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="margin-left">
-            <xsl:value-of select="&columnfragment; + &gutter; - $titlepage.logo.overhang"/>mm
-          </xsl:attribute>
-        </xsl:otherwise>
-      </xsl:choose>
-      <fo:instream-foreign-object content-width="{$titlepage.logo.width}"
-        width="{$titlepage.logo.width}">
-        <xsl:call-template name="logo-image"/>
-      </fo:instream-foreign-object>
-    </fo:block>
+              <xsl:when test="$writing.mode = 'rl'">
+                <xsl:attribute name="margin-right">
+                  <xsl:value-of select="&columnfragment; + &gutter;"/>mm
+                </xsl:attribute>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="margin-left">
+                  <xsl:value-of
+                    select="&columnfragment; + &gutter; - $titlepage.logo.overhang"
+                  />mm </xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
+          <fo:instream-foreign-object content-width="{$titlepage.logo.width}"
+            width="{$titlepage.logo.width}">
+            <xsl:call-template name="logo-image"/>
+          </fo:instream-foreign-object>
+          </fo:block>
+        </fo:table-cell>
+        <fo:table-cell>
+          <fo:block text-align="end"  font-size="&large;">
+            <xsl:choose>
+              <xsl:when test="articleinfo/orgname">
+                <xsl:apply-templates
+                  mode="article.titlepage.recto.auto.mode"
+                  select="articleinfo/orgname"/>
+              </xsl:when>
+              <xsl:when test="info/orgname">
+                <xsl:apply-templates
+                  mode="article.titlepage.recto.auto.mode"
+                  select="info/orgname"/>
+              </xsl:when>
+              <xsl:otherwise><!-- Keep it empty, when no orgname is found --></xsl:otherwise>
+            </xsl:choose>
+          </fo:block>
+        </fo:table-cell>
+      </fo:table-body>
+    </fo:table>
 
     <fo:block start-indent="{&columnfragment; + &gutter;}mm" text-align="start"
       role="article.titlepage.recto">
