@@ -35,7 +35,7 @@
       </xsl:call-template>
     </xsl:variable>
 
-    <fo:table><!--  border="1pt solid red" -->
+    <fo:table space-after="4em"><!--  border="1pt solid red" -->
       <fo:table-body>
         <fo:table-cell>
           <fo:block text-align="start" padding-left="0">
@@ -64,7 +64,6 @@
           </fo:block>
         </fo:table-cell>
         <fo:table-cell>
-          <fo:block text-align="end"  font-size="&large;">
             <xsl:choose>
               <xsl:when test="articleinfo/orgname">
                 <xsl:apply-templates
@@ -76,9 +75,11 @@
                   mode="article.titlepage.recto.auto.mode"
                   select="info/orgname"/>
               </xsl:when>
-              <xsl:otherwise><!-- Keep it empty, when no orgname is found --></xsl:otherwise>
+              <xsl:otherwise>
+                <!-- Keep it empty, when no orgname is found -->
+                <fo:block/>
+              </xsl:otherwise>
             </xsl:choose>
-          </fo:block>
         </fo:table-cell>
       </fo:table-body>
     </fo:table>
@@ -176,6 +177,11 @@
     </fo:block>
   </xsl:template>
 
+  <xsl:template match="orgname" mode="article.titlepage.recto.auto.mode">
+    <fo:block text-align="end" font-size="&x-large;" xsl:use-attribute-sets="dark-green">]
+      <xsl:apply-templates select="." mode="article.titlepage.recto.mode"/>
+    </fo:block>
+  </xsl:template>
 
   <xsl:template match="articleinfo/mediaobject" mode="article.titlepage.recto.auto.mode">
     <fo:block break-after="page">
