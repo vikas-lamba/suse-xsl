@@ -13,10 +13,6 @@
    <l:gentext key="Contributor"     text="Contributeur"/>
    <l:gentext key="Contributors"    text="Contributeurs"/>
 
-   <l:gentext key="FlyerQuickstart" text="NOVELL&#x00AE; FICHE D&#xc9;MARRAGE RAPIDE"/>
-   <!-- FlyerCopyright: Moved to copyright_quick.xml -->
-   <l:gentext key="FlyerMadeby"  text="Cr&#xe9;&#xe9; par SUSE&#x00AE; avec XSL-FO"/>
-
    <l:gentext key="admonseparator"  text=" : "/>
 
    <l:gentext key="hyphenation-push-character-count" text="4"/>
@@ -51,6 +47,8 @@
    <l:gentext key="version" text="Version"/>
    <l:gentext key="Version" text="Version"/>
 
+   <l:gentext key="step.optional" text="(Optionnelle)"/>
+
    <!-- In most cases, this has to be empty -->
    <l:dingbat key="guimenustartquote" text=""/>
    <l:dingbat key="guimenuendquote" text=""/>
@@ -76,15 +74,24 @@
 
    <l:context name="xref">
       <l:template name="page.citation" text=" (p.&#160;%p)"/>
-     
-      <l:template name="intra-article" text="Article « %t »"/>
-      <l:template name="intra-book" text="Livre « %t »"/>
-      <l:template name="intra-chapter" text="Chapitre %n “%t »"/>
-      <!--<l:template name="intra-part" text="%B %t"/>-->
-      <l:template name="intra-sect1" text="Section %n « %t »"/>
-      <l:template name="intra-sect2" text="Section %n « %t »"/>
-      <l:template name="intra-sect3" text="Section %n « %t »"/>
-      <l:template name="intra-sect4" text="Section %n « %t »"/>
+
+      <l:template name="intra-article" text="Article «&#160;%t&#160;»"/>
+      <l:template name="intra-book" text="Manuel «&#160;%t&#160;»"/>
+      <l:template name="intra-chapter" text="Chapitre %n «&#160;%t&#160;»"/>
+      <l:template name="intra-sect1" text="Section&#160;%n «&#160;%t&#160;»"/>
+      <l:template name="intra-sect2" text="Section&#160;%n «&#160;%t&#160;»"/>
+      <l:template name="intra-sect3" text="Section&#160;%n «&#160;%t&#160;»"/>
+      <l:template name="intra-sect4" text="Section&#160;%n «&#160;%t&#160;»"/>
+
+      <l:template name="intra-example" text="Exemple&#160;%n «&#160;%t&#160;»"/>
+      <l:template name="intra-figure" text="Figure&#160;%n «&#160;%t&#160;»"/>
+      <l:template name="intra-preface" text="Préface «&#160;%t&#160;»"/>
+      <l:template name="intra-procedure" text="Procédure&#160;%n «&#160;%t&#160;»"/>
+      <l:template name="intra-table" text="Tableau&#160;%n «&#160;%t&#160;»"/>
+
+      <l:template name="intra-variablelist" text="«&#160;%t&#160;»"/>
+      <l:template name="intra-orderedlist" text="«&#160;%t&#160;»"/>
+      <l:template name="intra-itemizedlist" text="«&#160;%t&#160;»"/>
    </l:context>
 
    <l:context name="xref-number-and-title">
@@ -167,18 +174,18 @@
 
 
    <l:context name="datetime-full">
-      <l:template name="January" text="Janvier" lang="fr" />
-      <l:template name="February" text="F&#xe9;vrier" lang="fr" />
-      <l:template name="March" text="Mars" lang="fr" />
-      <l:template name="April" text="Avril" lang="fr" />
-      <l:template name="May" text="Mai" lang="fr" />
-      <l:template name="June" text="Juin" lang="fr" />
-      <l:template name="July" text="Juillet" lang="fr" />
-      <l:template name="August" text="Aout" lang="fr" />
-      <l:template name="September" text="Septembre" lang="fr" />
-      <l:template name="October" text="Octobre" lang="fr" />
-      <l:template name="November" text="Novembre" lang="fr" />
-      <l:template name="December" text="D&#xe9;cembre" lang="fr" />
+      <l:template name="January" text="janvier" lang="fr" />
+      <l:template name="February" text="f&#xe9;vrier" lang="fr" />
+      <l:template name="March" text="mars" lang="fr" />
+      <l:template name="April" text="avril" lang="fr" />
+      <l:template name="May" text="mai" lang="fr" />
+      <l:template name="June" text="juin" lang="fr" />
+      <l:template name="July" text="juillet" lang="fr" />
+      <l:template name="August" text="aout" lang="fr" />
+      <l:template name="September" text="septembre" lang="fr" />
+      <l:template name="October" text="octobre" lang="fr" />
+      <l:template name="November" text="novembre" lang="fr" />
+      <l:template name="December" text="d&#xe9;cembre" lang="fr" />
    </l:context>
 
    <l:context name="parameters">

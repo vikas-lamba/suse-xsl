@@ -73,7 +73,7 @@
       <xsl:with-param name="component-candidate" select="($bugtracker/dm:component[normalize-space(.) != ''])[last()]"/>
       <xsl:with-param name="product-candidate" select="($bugtracker/dm:product[normalize-space(.) != ''])[last()]"/>
       <xsl:with-param name="version-candidate" select="($bugtracker/dm:version[normalize-space(.) != ''])[last()]"/>
-      <xsl:with-param name="labels-candidate" select="($bugtracker/dm:version[normalize-space(.) != ''])[last()]"/>
+      <xsl:with-param name="labels-candidate" select="($bugtracker/dm:labels[normalize-space(.) != ''])[last()]"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -182,17 +182,20 @@
           <xsl:if test="$product">
             <meta name="tracker-{$type}-product" content="{$product}"/>
           </xsl:if>
+          <xsl:if test="$version">
+            <meta name="tracker-{$type}-version" content="{$version}"/>
+          </xsl:if>
         </xsl:if>
 
         <xsl:if test="$type = 'gh'">
           <xsl:if test="$labels">
             <meta name="tracker-{$type}-labels" content="{$labels}"/>
           </xsl:if>
+          <xsl:if test="$version">
+            <meta name="tracker-{$type}-milestone" content="{$version}"/>
+          </xsl:if>
         </xsl:if>
 
-        <xsl:if test="$version">
-          <meta name="tracker-{$type}-version" content="{$version}"/>
-        </xsl:if>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="log.message">

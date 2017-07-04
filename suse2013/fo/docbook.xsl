@@ -31,7 +31,7 @@
 
   <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl"/>
 
-  <xsl:include href="../version.xsl"/>
+  <xsl:include href="../VERSION.xsl"/>
   <xsl:include href="param.xsl"/>
   <xsl:include href="attributesets.xsl"/>
   <xsl:include href="../common/units.xsl"/>
@@ -53,6 +53,7 @@
   <xsl:include href="table.xsl"/>
   <xsl:include href="htmltbl.xsl"/>
   <xsl:include href="inline.xsl"/>
+  <xsl:include href="footnote.xsl"/>
   <xsl:include href="fo.xsl"/>
   <xsl:include href="refentry.xsl"/>
   <xsl:include href="division.xsl"/>

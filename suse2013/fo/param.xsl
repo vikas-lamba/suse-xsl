@@ -119,6 +119,7 @@ task before
      "<screen>ls -l</screen>" "ls - -l"? -->
 <!-- <xsl:param name="hyphenate.verbatim" select="'1'"/> -->
 
+<xsl:param name="runinhead.default.title.end.punct">:</xsl:param>
 
 <!-- 18. Graphics =============================================== -->
 
@@ -153,7 +154,7 @@ task before
 
 <xsl:param name="alignment">
   <xsl:choose>
-    <xsl:when test="enable-text-justification = 'false'">start</xsl:when>
+    <xsl:when test="$enable-text-justification = 'false'">start</xsl:when>
     <xsl:otherwise>justify</xsl:otherwise>
   </xsl:choose>
 </xsl:param>
@@ -202,6 +203,9 @@ task before
   </xsl:call-template>
 </xsl:param>
 
+<xsl:param name="sans-fontsize-adjust" select="$fontsize-adjust * $sans-xheight-adjust"/>
+<xsl:param name="mono-fontsize-adjust" select="$fontsize-adjust * $mono-xheight-adjust"/>
+
 <xsl:param name="body.font.family" select="$serif-stack"/>
 <!-- It is not helpful to set dingbat font family, as the symbol font is always
      included anyway -->
@@ -213,9 +217,9 @@ task before
 
 <xsl:param name="body.font.master" select="'&normal;'"/>
 <xsl:param name="body.font.size">
-  <xsl:value-of select="($body.font.master * $fontsize-adjust) div $mono-xheight-adjust"/>pt
+  <xsl:value-of select="$body.font.master * $fontsize-adjust"/>pt
 </xsl:param>
-<xsl:param name="footnote.font.size" select="'&small;pt'"/>
+<xsl:param name="footnote.font.size"><xsl:value-of select="&small; * $sans-fontsize-adjust"/>pt</xsl:param>
 
 
 <!-- 21. Property Sets ========================================== -->
@@ -300,6 +304,26 @@ task before
   </xsl:call-template>
 </xsl:param>
 
+<!-- Callouts font basically hardcoded to be the default font (since these
+are always just normal numbers). -->
+<xsl:param name="callout-font-stack">
+  <xsl:call-template name="get.l10n.property">
+    <xsl:with-param name="property" select="'sans'"/>
+    <xsl:with-param name="property.language" select="'default'"/>
+  </xsl:call-template>
+</xsl:param>
+<xsl:param name="enable-callout-font-semibold">
+  <xsl:call-template name="get.l10n.property">
+    <xsl:with-param name="property" select="'enable-sans-semibold'"/>
+    <xsl:with-param name="property.language" select="'default'"/>
+  </xsl:call-template>
+</xsl:param>
+<xsl:param name="callout-font-weight">
+  <xsl:choose>
+    <xsl:when test="$enable-callout-font-semibold">600</xsl:when>
+    <xsl:otherwise>700</xsl:otherwise>
+  </xsl:choose>
+</xsl:param>
 
 
 <!-- 24. EBNF =================================================== -->
@@ -328,6 +352,8 @@ task before
 Suite 200
 Cambridge MA 02141
 USA</xsl:param>
+
+<xsl:param name="enable.secondary.branding" select="1"/>
 
 <xsl:param name="styleroot" select="'WARNING: styleroot unset!'"/>
 

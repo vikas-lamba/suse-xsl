@@ -32,7 +32,7 @@
 
   <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
 
-  <xsl:include href="../version.xsl"/>
+  <xsl:include href="../VERSION.xsl"/>
 
   <xsl:include href="../common/dates-revisions.xsl"/>
   <xsl:include href="../common/labels.xsl"/>
@@ -626,15 +626,6 @@
     <xsl:param name="node" select="."/>
 
     <xsl:if test="$build.for.web = 1">
-      <!-- Load fonts from the web:
-        if (we are online) {
-          if (Chrome/Android) {
-            Use a CSS file without local() fonts, as
-            Chrome/Chromium on Android do not understand local(). }
-          else {
-            Download the normal CSS that contains references to the web
-            fonts. }
-           -->
       <script type="text/javascript">
 <xsl:text disable-output-escaping="yes">
 <![CDATA[
@@ -643,9 +634,6 @@ if ( protocol != 'file:' ) {
   var agent = navigator.userAgent.toLowerCase();
   var wanted = ( protocol == 'https:') ? 'https' : 'http';
   var file = 'fonts.css';
-  if (agent.indexOf('android') != -1 && agent.indexOf('chrom') != -1 ) {
-      file = 'fonts-nolocal.css';
-  }
   document.write('<link rel="stylesheet" type="text/css" href="' + wanted + '://static.opensuse.org/fonts/'+ file +'"></link>');
 }
 else {
@@ -667,6 +655,25 @@ else {
       <xsl:call-template name="make.script.link">
         <xsl:with-param name="script.filename" select="$daps.header.js.custom"/>
       </xsl:call-template>
+    </xsl:if>
+    <xsl:if test="$enable.source.highlighting = 1">
+      <xsl:call-template name="make.script.link">
+        <xsl:with-param name="script.filename" select="$daps.header.js.highlight"/>
+      </xsl:call-template>
+      <script>
+<xsl:text disable-output-escaping="yes">
+<![CDATA[
+$(document).ready(function() {
+  $('.verbatim-wrap.highlight').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+hljs.configure({
+  useBR: false
+});
+]]>
+</xsl:text>
+      </script>
     </xsl:if>
   </xsl:template>
 

@@ -32,10 +32,18 @@
 <xsl:attribute-set name="admonition.title.properties">
   <xsl:attribute name="font-family"><xsl:value-of select="$title.font.family"/></xsl:attribute>
   <xsl:attribute name="font-weight">normal</xsl:attribute>
-  <xsl:attribute name="font-size">&x-large;pt</xsl:attribute>
   <xsl:attribute name="hyphenate">false</xsl:attribute>
   <xsl:attribute name="keep-with-next.within-column">always</xsl:attribute>
   <xsl:attribute name="text-align">start</xsl:attribute>
+</xsl:attribute-set>
+
+<!-- FIXME: The font sizes here are a nice idea in theory. In practice, they
+are overridden somewhere. Probably because of the original stylesheets. -->
+<xsl:attribute-set name="admonition.normal.title.properties">
+  <xsl:attribute name="font-size"><xsl:value-of select="&xxx-large; * $sans-fontsize-adjust"/>pt</xsl:attribute>
+</xsl:attribute-set>
+<xsl:attribute-set name="admonition.compact.title.properties">
+  <xsl:attribute name="font-size"><xsl:value-of select="&normal; * $sans-fontsize-adjust"/>pt</xsl:attribute>
 </xsl:attribute-set>
 
 <xsl:attribute-set name="graphical.admonition.properties">
@@ -60,6 +68,7 @@
     <xsl:value-of select="$body.font.size"/>
   </xsl:attribute>
   <xsl:attribute name="text-align">start</xsl:attribute>
+  <xsl:attribute name="hyphenate">false</xsl:attribute>
 </xsl:attribute-set>
 
 <xsl:attribute-set name="toc.pagenumber.properties"
@@ -88,25 +97,25 @@
 <xsl:attribute-set name="toc.level1.properties"
   use-attribute-sets="toc.common.properties title.name.color">
   <xsl:attribute name="font-weight">normal</xsl:attribute>
-  <xsl:attribute name="font-size">&large;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&large; * $sans-fontsize-adjust"/>pt</xsl:attribute>
   <xsl:attribute name="text-transform">uppercase</xsl:attribute>
 </xsl:attribute-set>
 <!-- preface, chapter, appendix, glossary -->
 <xsl:attribute-set name="toc.level2.properties"
   use-attribute-sets="toc.common.properties sans.bold.noreplacement">
   <xsl:attribute name="line-height"><xsl:value-of select="$base-lineheight * 0.85"/>em</xsl:attribute>
-  <xsl:attribute name="font-size">&xx-large;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&xx-large; * $sans-fontsize-adjust"/>pt</xsl:attribute>
 </xsl:attribute-set>
 <!-- sect1 -->
 <xsl:attribute-set name="toc.level3.properties"
   use-attribute-sets="toc.common.properties">
-  <xsl:attribute name="font-size">&large;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&large; * $sans-fontsize-adjust"/>pt</xsl:attribute>
   <xsl:attribute name="font-weight">normal</xsl:attribute>
 </xsl:attribute-set>
 <!-- sect2 -->
 <xsl:attribute-set name="toc.level4.properties"
   use-attribute-sets="toc.common.properties">
-  <xsl:attribute name="font-size">&normal;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&normal; * $sans-fontsize-adjust"/>pt</xsl:attribute>
   <xsl:attribute name="font-weight">normal</xsl:attribute>
 </xsl:attribute-set>
 
@@ -147,8 +156,8 @@
      font, thus they use x-height scaling adapted to work inside sans
      text. Welp.
      xref.properties are also applied to ulinks, to be consistent. -->
-<xsl:attribute-set name="xref.properties"
-                   use-attribute-sets="dark-green title.font">
+<xsl:attribute-set name="xref.basic.properties"
+                   use-attribute-sets="title.font">
   <xsl:attribute name="font-style">
     <xsl:choose>
       <xsl:when test="self::xref and $enable-italic = 'true'">italic</xsl:when>
@@ -172,13 +181,25 @@
   </xsl:attribute>
 </xsl:attribute-set>
 
+<xsl:attribute-set name="xref.properties"
+                   use-attribute-sets="title.font xref.basic.properties">
+  <xsl:attribute name="color">
+    <xsl:choose>
+     <xsl:when test="ancestor::remark">&white;</xsl:when>
+     <xsl:otherwise>
+      <xsl:value-of select="$dark-green"/>
+     </xsl:otherwise>
+    </xsl:choose>
+  </xsl:attribute>
+</xsl:attribute-set>
+
 
 <!-- 13. Lists ================================================== -->
 
 <xsl:attribute-set name="variablelist.term.properties"
   use-attribute-sets="sans.bold.noreplacement">
   <xsl:attribute name="font-family"><xsl:value-of select="$sans.font.family"/></xsl:attribute>
-  <xsl:attribute name="font-size"><xsl:value-of select="$fontsize-adjust * $sans-xheight-adjust"/>em</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="$sans-xheight-adjust"/>em</xsl:attribute>
   <xsl:attribute name="line-height"><xsl:value-of select="$base-lineheight * $sans-lineheight-adjust"/>em</xsl:attribute>
 </xsl:attribute-set>
 
@@ -189,7 +210,7 @@
 <xsl:attribute-set name="orderedlist.label.properties"
   use-attribute-sets="lists.label.properties sans.bold">
   <xsl:attribute name="font-family"><xsl:value-of select="$sans-stack"/></xsl:attribute>
-  <xsl:attribute name="font-size"><xsl:value-of select="$fontsize-adjust * $sans-xheight-adjust"/>em</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="$sans-xheight-adjust"/>em</xsl:attribute>
   <xsl:attribute name="line-height"><xsl:value-of select="$base-lineheight * $sans-lineheight-adjust"/>em</xsl:attribute>
 </xsl:attribute-set>
 <xsl:attribute-set name="itemizedlist.label.properties"
@@ -225,13 +246,33 @@
 
 <xsl:attribute-set name="list.item.spacing"
   use-attribute-sets="list-orphans-widows">
-  <xsl:attribute name="space-before.optimum">0.8em</xsl:attribute>
-  <xsl:attribute name="space-before.minimum">0.6em</xsl:attribute>
-  <xsl:attribute name="space-before.maximum">1.0em</xsl:attribute>
+  <xsl:attribute name="space-before.optimum">
+   <xsl:choose>
+    <xsl:when test="self::answer">0</xsl:when>
+    <xsl:otherwise>0.8em</xsl:otherwise>
+   </xsl:choose>
+  </xsl:attribute>
+  <xsl:attribute name="space-before.minimum">
+   <xsl:choose>
+    <xsl:when test="self::answer">0</xsl:when>
+    <xsl:otherwise>0.6em</xsl:otherwise>
+   </xsl:choose>
+  </xsl:attribute>
+  <xsl:attribute name="space-before.maximum">
+   <xsl:choose>
+    <xsl:when test="self::answer">0</xsl:when>
+    <xsl:otherwise>1em</xsl:otherwise>
+   </xsl:choose>
+  </xsl:attribute>
 </xsl:attribute-set>
 
 <xsl:attribute-set name="compact.list.item.spacing"
   use-attribute-sets="list-orphans-widows"/>
+
+<xsl:attribute-set name="footnote.wrap">
+  <xsl:attribute name="line-height"><xsl:value-of select="$base-lineheight * 0.85"/>em</xsl:attribute>
+  <xsl:attribute name="margin-bottom">&gutterfragment;mm</xsl:attribute>
+</xsl:attribute-set>
 
 
 <!-- 14. QAndASet =============================================== -->
@@ -297,7 +338,7 @@
     <xsl:value-of select="$sans.font.family"/>
   </xsl:attribute>
   <xsl:attribute name="font-size">
-    <xsl:text>&small;pt</xsl:text>
+    <xsl:value-of select="&small; * $sans-fontsize-adjust"/>pt
   </xsl:attribute>
   <xsl:attribute name="margin-{$start-border}">
     <xsl:value-of select="$title.margin.left"/>
@@ -313,12 +354,15 @@
         <xsl:otherwise>inherit</xsl:otherwise>
       </xsl:choose>
     </xsl:attribute>
-    <xsl:attribute name="line-height"><xsl:value-of select="$base-lineheight"/>em</xsl:attribute>
+    <xsl:attribute name="line-height">
+       <xsl:value-of select="concat($base-lineheight, 'em')"/>
+    </xsl:attribute>
     <xsl:attribute name="widows">3</xsl:attribute>
     <xsl:attribute name="orphans">3</xsl:attribute>
     <xsl:attribute name="margin-top">
       <xsl:choose>
-        <xsl:when test="parent::callout|parent::listitem|
+       <!-- (parent::question/para[2] or parent::question )  -->
+        <xsl:when test="parent::callout|parent::listitem| parent::question|
                         parent::step|parent::substep">0</xsl:when>
         <xsl:otherwise>0.3em</xsl:otherwise>
       </xsl:choose>
@@ -367,7 +411,9 @@
   <xsl:attribute name="text-align">start</xsl:attribute>
   <xsl:attribute name="wrap-option">wrap</xsl:attribute>
   <xsl:attribute name="hyphenation-character"><xsl:value-of select="$hook"/></xsl:attribute>
-  <xsl:attribute name="font-size">&small;pt</xsl:attribute>
+  <!-- Is this the right solution or leave this hard-coded (i.e. without
+  $fontsize-adjust)? We need at least 80 characters on a line... -->
+  <xsl:attribute name="font-size"><xsl:value-of select="&small; * $mono-fontsize-adjust"/>pt</xsl:attribute>
   <xsl:attribute name="line-height"><xsl:value-of select="$base-lineheight"/>em</xsl:attribute>
 </xsl:attribute-set>
 
@@ -389,30 +435,30 @@
 </xsl:attribute-set>
 
 <xsl:attribute-set name="section.title.level1.properties">
-  <xsl:attribute name="font-size">&xxx-large;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&xxx-large; * $sans-fontsize-adjust"/>pt</xsl:attribute>
 </xsl:attribute-set>
 <xsl:attribute-set name="section.title.level2.properties">
-  <xsl:attribute name="font-size">&xx-large;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&xx-large; * $sans-fontsize-adjust"/>pt</xsl:attribute>
 </xsl:attribute-set>
 <xsl:attribute-set name="section.title.level3.properties">
-  <xsl:attribute name="font-size">&x-large;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&x-large; * $sans-fontsize-adjust"/>pt</xsl:attribute>
 </xsl:attribute-set>
 <xsl:attribute-set name="section.title.level4.properties"
   use-attribute-sets="sans.bold.noreplacement">
-  <xsl:attribute name="font-size">&large;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&large; * $sans-fontsize-adjust"/>pt</xsl:attribute>
 </xsl:attribute-set>
 <xsl:attribute-set name="section.title.level5.properties">
-  <xsl:attribute name="font-size">&large;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&large; * $sans-fontsize-adjust"/>pt</xsl:attribute>
 </xsl:attribute-set>
 <xsl:attribute-set name="section.title.level6.properties"
   use-attribute-sets="sans.bold.noreplacement">
-  <xsl:attribute name="font-size">&normal;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&normal; * $sans-fontsize-adjust"/>pt</xsl:attribute>
 </xsl:attribute-set>
 
 <xsl:attribute-set name="formal.title.properties"
   use-attribute-sets="normal.para.spacing dark-green sans.bold.noreplacement">
   <xsl:attribute name="font-family"><xsl:value-of select="$sans.font.family"/></xsl:attribute>
-  <xsl:attribute name="font-size">&small;pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&small; * $sans-fontsize-adjust"/>pt</xsl:attribute>
   <xsl:attribute name="text-transform">uppercase</xsl:attribute>
   <xsl:attribute name="hyphenate">false</xsl:attribute>
   <xsl:attribute name="space-before.minimum">0.8em</xsl:attribute>
@@ -429,7 +475,7 @@
 
 <xsl:attribute-set name="abstract.properties">
   <xsl:attribute name="font-family"><xsl:value-of select="$body.font.family"/></xsl:attribute>
-  <xsl:attribute name="font-size"><xsl:value-of select="(&normal; * $fontsize-adjust) div $mono-xheight-adjust"/>pt</xsl:attribute>
+  <xsl:attribute name="font-size"><xsl:value-of select="&large; * $fontsize-adjust"/>pt</xsl:attribute>
   <xsl:attribute name="text-align">start</xsl:attribute>
   <xsl:attribute name="line-height">4em</xsl:attribute>
   <xsl:attribute name="start-indent">inherit</xsl:attribute>
@@ -447,9 +493,9 @@
 <xsl:attribute-set name="bold.replacement.color">
  <xsl:attribute name="background-color">
     <xsl:choose>
-      <xsl:when test="$enable-bold != 'true'">&light-gray-old;</xsl:when>
-      <!-- We would use transparent, but XEP does not support it. Inherit seems
-           good enough. -->
+      <xsl:when test="$enable-bold != 'true'">&bold-replacement;</xsl:when>
+      <!--  We would use "transparent," but XEP does not support that. "inherit"
+            seems good enough. -->
       <xsl:otherwise>inherit</xsl:otherwise>
     </xsl:choose>
   </xsl:attribute>
@@ -458,7 +504,7 @@
 <xsl:attribute-set name="italic.replacement.color">
   <xsl:attribute name="color">
     <xsl:choose>
-      <xsl:when test="$enable-italic != 'true'">&special-gray;</xsl:when>
+      <xsl:when test="$enable-italic != 'true'">&italic-replacement;</xsl:when>
       <xsl:otherwise>inherit</xsl:otherwise>
     </xsl:choose>
   </xsl:attribute>

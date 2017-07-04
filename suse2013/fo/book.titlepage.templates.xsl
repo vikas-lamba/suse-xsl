@@ -36,18 +36,20 @@
   </xsl:variable>
 
   <!-- Geeko tail cover image -->
-  <!-- FIXME: Review LTR/RTL situation...  -->
-  <fo:block-container top="{(2 - &goldenratio;) * $height}{$unit}" left="0"
-    text-align="right"
-    absolute-position="fixed">
-    <fo:block>
-    <!-- Almost golden ratio... -->
-      <fo:instream-foreign-object content-width="{$titlepage.background.width}"
-        width="{$titlepage.background.width}">
-        <xsl:call-template name="secondary-branding"/>
-      </fo:instream-foreign-object>
-    </fo:block>
-  </fo:block-container>
+  <xsl:if test="$enable.secondary.branding = 1">
+    <!-- FIXME: Review LTR/RTL situation...  -->
+    <fo:block-container top="{(2 - &goldenratio;) * $height}{$unit}" left="0"
+      text-align="right"
+      absolute-position="fixed">
+      <fo:block>
+      <!-- Almost golden ratio... -->
+        <fo:instream-foreign-object content-width="{$titlepage.background.width}"
+          width="{$titlepage.background.width}">
+          <xsl:call-template name="secondary-branding"/>
+        </fo:instream-foreign-object>
+      </fo:block>
+    </fo:block-container>
+  </xsl:if>
 
   <!-- Logo -->
   <fo:block-container top="{$page.margin.top}" absolute-position="fixed"
@@ -152,7 +154,7 @@
 
 <xsl:template match="subtitle" mode="book.titlepage.recto.auto.mode">
   <fo:block
-    xsl:use-attribute-sets="title.font" font-size="&super-large;pt"
+    xsl:use-attribute-sets="title.font" font-size="{&super-large; * $sans-fontsize-adjust}pt"
     space-before="&gutterfragment;mm">
     <xsl:apply-templates select="." mode="book.titlepage.recto.mode"/>
   </fo:block>
@@ -162,7 +164,7 @@
   mode="book.titlepage.recto.auto.mode">
   <fo:block text-align="start" hyphenate="false"
     line-height="{$base-lineheight * 0.85}em"
-    font-weight="normal" font-size="&super-large;pt"
+    font-weight="normal" font-size="{&super-large; * $sans-fontsize-adjust}pt"
     space-after="&gutterfragment;mm"
     xsl:use-attribute-sets="title.font sans.bold.noreplacement mid-green">
     <xsl:apply-templates select="." mode="book.titlepage.recto.mode"/>
@@ -175,14 +177,14 @@
 <xsl:template match="title" mode="book.titlepage.verso.auto.mode">
   <fo:block
     xsl:use-attribute-sets="book.titlepage.verso.style sans.bold"
-    font-size="&x-large;pt" font-family="{$title.fontset}">
+    font-size="{&x-large; * $sans-fontsize-adjust}pt" font-family="{$title.fontset}">
     <xsl:call-template name="book.verso.title"/>
   </fo:block>
 </xsl:template>
 
 <xsl:template match="legalnotice" mode="book.titlepage.verso.auto.mode">
   <fo:block
-    xsl:use-attribute-sets="book.titlepage.verso.style" font-size="&small;pt">
+    xsl:use-attribute-sets="book.titlepage.verso.style" font-size="{&small; * $fontsize-adjust}pt">
     <xsl:apply-templates select="*" mode="book.titlepage.verso.mode"/>
   </fo:block>
 </xsl:template>
@@ -302,7 +304,7 @@
 </xsl:template>
 
 <xsl:template match="title" mode="book.titlepage.verso.auto.mode">
-    <fo:block font-size="&x-large;pt"
+    <fo:block font-size="{&x-large; * $sans-fontsize-adjust}pt"
       xsl:use-attribute-sets="book.titlepage.verso.style dark-green sans.bold.noreplacement title.font">
       <xsl:call-template name="book.verso.title"/>
     </fo:block>
@@ -310,7 +312,7 @@
 
 <xsl:template match="productname[not(@role='abbrev')]" mode="book.titlepage.verso.auto.mode">
   <fo:block xsl:use-attribute-sets="book.titlepage.verso.style"
-    font-size="&large;pt" font-family="{$title.fontset}">
+    font-size="{&large; * $sans-fontsize-adjust}pt" font-family="{$title.fontset}">
     <xsl:apply-templates select="." mode="book.titlepage.verso.mode"/>
     <xsl:text> </xsl:text>
     <xsl:if test="../productnumber">
@@ -339,7 +341,7 @@
 </xsl:template>
 
 <xsl:template match="editor" mode="book.titlepage.verso.auto.mode">
-  <fo:block font-size="&normal;pt">
+  <fo:block font-size="{&normal; * $sans-fontsize-adjust}pt">
     <xsl:apply-templates select="." mode="book.titlepage.verso.mode"/>
   </fo:block>
 </xsl:template>

@@ -11,9 +11,6 @@
    <l:gentext key="Contributor"     text="Mitwirkender"/>
    <l:gentext key="Contributors"    text="Mitwirkende"/>
    <l:gentext key="admonseparator"  text=": "/>
-   <l:gentext key="FlyerQuickstart" text="NOVELL&#x00AE; SCHNELLSTART"/>
-   <!-- FlyerCopyright: Moved to copyright_quick.xml -->
-   <l:gentext key="FlyerMadeby"  text="Erstellt von SUSE&#x00AE; mit XSL-FO"/>
 
    <l:gentext key="selectlanguage" text="Sprache wählen"/>
    <l:gentext key="selectformat" text="Format wählen"/>
@@ -44,6 +41,8 @@
    <l:gentext key="version" text="Version"/>
    <l:gentext key="Version" text="Version"/>
 
+   <l:gentext key="step.optional" text="(Optional)"/>
+
    <!-- In most cases, this has to be empty -->
    <l:dingbat key="guimenustartquote" text=""/>
    <l:dingbat key="guimenuendquote" text=""/>
@@ -71,7 +70,7 @@
 
    <l:context name="xref">
       <l:template name="page.citation" text=" (S.&#160;%p)"/>
-     
+
       <l:template name="intra-article" text="Artikel „%t”"/>
       <l:template name="intra-book" text="Buch „%t”"/>
       <l:template name="intra-chapter" text="Kapitel %n „%t”"/>
@@ -80,13 +79,13 @@
       <l:template name="intra-sect2" text="Abschnitt %n „%t”"/>
       <l:template name="intra-sect3" text="Abschnitt %n „%t”"/>
       <l:template name="intra-sect4" text="Abschnitt %n „%t”"/>
-     
+
       <l:template name="intra-example" text="Beispiel %n “%t”"/>
       <l:template name="intra-figure" text="Abbildung %n “%t”"/>
       <l:template name="intra-preface" text="Vorwort “%t”"/>
       <l:template name="intra-procedure" text="Prozedur %n “%t”"/>
       <l:template name="intra-table" text="Tabelle %n “%t”"/>
-     
+
       <l:template name="intra-variablelist" text="“%t”"/>
       <l:template name="intra-orderedlist" text="“%t”"/>
       <l:template name="intra-itemizedlist" text="“%t”"/>
@@ -177,5 +176,27 @@
 
    <l:context name="datetime">
      <l:template name="titlepage.format" text="d.m.Y"/>
+   </l:context>
+
+   <l:context name="datetime-full">
+     <l:template name="January" text="Januar"/>
+     <l:template name="February" text="Februar"/>
+     <l:template name="March" text="März"/>
+     <l:template name="April" text="April"/>
+     <l:template name="May" text="Mai"/>
+     <l:template name="June" text="Juni"/>
+     <l:template name="July" text="Juli"/>
+     <l:template name="August" text="August"/>
+     <l:template name="September" text="September"/>
+     <l:template name="October" text="Oktober"/>
+     <l:template name="November" text="November"/>
+     <l:template name="December" text="Dezember"/>
+     <l:template name="Monday" text="Montag"/>
+     <l:template name="Tuesday" text="Dienstag"/>
+     <l:template name="Wednesday" text="Mittwoch"/>
+     <l:template name="Thursday" text="Donnerstag"/>
+     <l:template name="Friday" text="Freitag"/>
+     <l:template name="Saturday" text="Samstag"/>
+     <l:template name="Sunday" text="Sonntag"/>
    </l:context>
 </l:l10n>

@@ -3,9 +3,9 @@
   Purpose:
     Unconditionally use a filled circle as the bullet before lists.
 
-  Author(s):  Stefan Knorr <sknorr@suse.de>
+  Author(s):  Stefan Knorr <sknorr@suse.de>, Janina Setz <jsetz@suse.com>
 
-  Copyright:  2013, Stefan Knorr
+  Copyright:  2013, 2016, Stefan Knorr, Janina Setz
 
 -->
 <!DOCTYPE xsl:stylesheet
@@ -84,29 +84,14 @@
   </xsl:variable>
 
   <!-- nested lists don't add extra list-block spacing -->
-  <xsl:choose>
-    <xsl:when test="ancestor::listitem">
-      <fo:list-block id="{$id}" xsl:use-attribute-sets="list.block.properties">
-        <xsl:if test="$keep.together != ''">
-          <xsl:attribute name="keep-together.within-column">
-            <xsl:value-of select="$keep.together"/>
-          </xsl:attribute>
-        </xsl:if>
-        <xsl:copy-of select="$content"/>
-      </fo:list-block>
-    </xsl:when>
-    <xsl:otherwise>
-      <fo:list-block id="{$id}"
-        xsl:use-attribute-sets="list.block.spacing list.block.properties">
-        <xsl:if test="$keep.together != ''">
-          <xsl:attribute name="keep-together.within-column">
-            <xsl:value-of select="$keep.together"/>
-          </xsl:attribute>
-        </xsl:if>
-        <xsl:copy-of select="$content"/>
-      </fo:list-block>
-    </xsl:otherwise>
-  </xsl:choose>
+  <fo:list-block id="{$id}" xsl:use-attribute-sets="list.block.spacing list.block.properties">
+   <xsl:if test="$keep.together != ''">
+    <xsl:attribute name="keep-together.within-column">
+     <xsl:value-of select="$keep.together"/>
+    </xsl:attribute>
+   </xsl:if>
+   <xsl:copy-of select="$content"/>
+  </fo:list-block>
 </xsl:template>
 
 
@@ -163,7 +148,11 @@
   </xsl:choose>
 </xsl:template>
 
-
+  <!-- Styling with a line on the left side +
+  Handle step performance="optional": For the common case, where there is a
+  para as the first item within step, we handle this in the para template
+  further down. For the much less common case of "anything else" (e.g. a list
+  as first element), we handle this directly in the step template.-->
 <xsl:template match="procedure">
   <xsl:variable name="id">
     <xsl:call-template name="object.id"/>
@@ -224,10 +213,12 @@
                XEP. -->
       </xsl:if>
 
-      <fo:block>
-        <xsl:attribute name="margin-{$start-border}">&columnfragment;mm</xsl:attribute>
-        <xsl:apply-templates select="$preamble"/>
-      </fo:block>
+      <xsl:if test="$preamble != ''">
+        <fo:block>
+          <xsl:attribute name="margin-{$start-border}">&columnfragment;mm</xsl:attribute>
+          <xsl:apply-templates select="$preamble"/>
+        </fo:block>
+      </xsl:if>
 
       <fo:list-block
         xsl:use-attribute-sets="list.block.spacing list.block.properties">
@@ -283,6 +274,14 @@
     </fo:list-item-label>
     <fo:list-item-body start-indent="body-start()">
       <fo:block>
+        <xsl:if test="@performance='optional' and
+                      *[1][local-name()!='para' and local-name()!='simpara']">
+          <fo:inline color="&mid-gray;" xsl:use-attribute-sets="italicized">
+            <xsl:call-template name="gentext">
+              <xsl:with-param name="key" select="'step.optional'"/>
+            </xsl:call-template>
+          </fo:inline>
+        </xsl:if>
         <xsl:apply-templates/>
       </fo:block>
     </fo:list-item-body>
@@ -313,7 +312,14 @@
         <xsl:with-param name="arch-value" select="@arch"/>
       </xsl:call-template>
     </xsl:if>
-
+    <xsl:if test="(self::para or self::simpara) and ../@performance='optional'">
+      <fo:inline color="&mid-gray;" xsl:use-attribute-sets="italicized">
+        <xsl:call-template name="gentext">
+          <xsl:with-param name="key" select="'step.optional'"/>
+        </xsl:call-template>
+      </fo:inline>
+      <xsl:text> </xsl:text>
+    </xsl:if>
     <xsl:apply-templates/>
 
     <xsl:if test="@arch != ''">
