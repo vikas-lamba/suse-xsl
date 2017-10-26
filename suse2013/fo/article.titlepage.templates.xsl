@@ -192,8 +192,8 @@
     <fo:block-container top="245mm" left="&column;mm"
     width="{&column; * 6 + &gutter; * 6}mm"
     absolute-position="fixed">
-    <fo:block border="&test2border;">
-      <fo:table width="100%" border="&test1border;"
+    <fo:block>
+      <fo:table width="100%"
         table-layout="fixed" block-progression-dimension="auto">
         <!-- A maximum of four logos should hopefully be fine. -->
         <fo:table-body>
@@ -225,19 +225,19 @@
               <xsl:if test="$node/mediaobject[2]">
                 <xsl:attribute name="border-right">&thinline;mm solid &black;</xsl:attribute>
               </xsl:if>
-              <fo:block padding="0" margin="0" width="auto" height="auto" text-align="center" line-height="1em" border="&test2border;">
+              <fo:block padding="0" margin="0" width="auto" height="auto" text-align="center" line-height="1em">
                 <xsl:if test="$node/mediaobject[2]">
                   <xsl:variable name="imagepath2" select="concat($img.src.path,$node/mediaobject[2]/imageobject[1]/imagedata[1]/@fileref)"/>
-                  <fo:external-graphic src="url({$imagepath2})" border="&test5border;" padding="0" margin="0" width="&column;mm" height="auto" content-width="scale-to-fit" content-height="scale-to-fit"/>
+                  <fo:external-graphic src="url({$imagepath2})" padding="0" margin="0" width="&column;mm" height="auto" content-width="scale-to-fit" content-height="scale-to-fit"/>
 <!--                  <xsl:apply-templates select="$node/mediaobject[2]"/>-->
                 </xsl:if>
               </fo:block>
             </fo:table-cell>
             <fo:table-cell display-align="center" margin="0">
-              <fo:block padding="0" margin="0" width="auto" height="auto" text-align="center" line-height="1em" border="&test1border;">
+              <fo:block padding="0" margin="0" width="auto" height="auto" text-align="center" line-height="1em">
                 <xsl:if test="$node/mediaobject[1]">
                   <xsl:variable name="imagepath1" select="concat($img.src.path,$node/mediaobject[1]/imageobject[1]/imagedata[1]/@fileref)"/>
-                  <fo:external-graphic src="url({$imagepath1})" border="&test4border;" padding="0" margin="0" width="&column;mm" height="auto" content-width="scale-to-fit" content-height="scale-to-fit"/>
+                  <fo:external-graphic src="url({$imagepath1})" padding="0" margin="0" width="&column;mm" height="auto" content-width="scale-to-fit" content-height="scale-to-fit"/>
 <!--                  <xsl:apply-templates select="$node/mediaobject[1]"/>-->
                 </xsl:if>
                </fo:block>
